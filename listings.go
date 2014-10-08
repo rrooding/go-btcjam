@@ -27,7 +27,7 @@ type ListingData struct {
   PercentFunded         int
   FundingThreshold      float64
   ListingScore          int
-  User
+  User                  User    `json:"user"`
 }
 
 // All information about a user belonging to a listing
@@ -57,7 +57,7 @@ type User struct {
   LateLoansAmount       float64
   OpenCreditLinesCount  int
   OpenCreditLinesAmount float64
-  MadeLatePayments      int
+  MadeLatePaymentsCount int     `json:"made_late_payments_count"`
 }
 
 // ListingsService communicates with the listings endpoint of the BTCJam API.
