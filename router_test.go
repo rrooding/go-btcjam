@@ -5,7 +5,7 @@ import (
   "net/http"
   "net/url"
 
-  "github.com/sqs/mux"
+  "github.com/gorilla/mux"
 )
 
 func TestMatch(t *testing.T) {

@@ -1,7 +1,7 @@
 package btcjam
 
 import (
-  "github.com/sqs/mux"
+  "github.com/gorilla/mux"
 )
 
 const (
