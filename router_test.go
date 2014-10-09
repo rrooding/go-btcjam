@@ -8,7 +8,7 @@ import (
   "github.com/gorilla/mux"
 )
 
-func TestMatch(t *testing.T) {
+func TestMatchRoutes(t *testing.T) {
   router := NewAPIRouter()
 
   tests := []struct {
