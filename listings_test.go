@@ -35,6 +35,6 @@ func TestListingsService_List(t *testing.T) {
   }
 
   if !reflect.DeepEqual(listings, want) {
-    t.Errorf("Listings.List returned %+v, want %+v", listings, want, "\n")
+    t.Errorf("Listings.List returned %+v, want %+v\n", listings, want)
   }
 }

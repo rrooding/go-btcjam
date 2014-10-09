@@ -60,3 +60,42 @@ func testQueryString(t *testing.T, r *http.Request, key string, wantValue string
     t.Errorf("Expected query param %v to have value '%v', got '%v'", key, wantValue, value)
   }
 }
+
+func Test_decodeRawJsonFloatDecodesIntegers(t *testing.T) {
+  wantValue := 1.0
+  message := []byte(`1`)
+
+  value, err := decodeRawJsonFloat(message)
+  if err != nil {
+    t.Fatalf("Error decoding %#v", message)
+  }
+  if value != wantValue {
+    t.Errorf("Expected value to be %f, got %f instead", wantValue, value)
+  }
+}
+
+func Test_decodeRawJsonFloatDecodesString(t *testing.T) {
+  wantValue := 1.234
+  message := []byte(`"1.234"`)
+
+  value, err := decodeRawJsonFloat(message)
+  if err != nil {
+    t.Fatalf("Error decoding %#v", message)
+  }
+  if value != wantValue {
+    t.Errorf("Expected value to be %f, got %f instead", wantValue, value)
+  }
+}
+
+func Test_decodeRawJsonFloatDecodesFloat(t *testing.T) {
+  wantValue := 1.234
+  message := []byte(`1.234`)
+
+  value, err := decodeRawJsonFloat(message)
+  if err != nil {
+    t.Fatalf("Error decoding %#v", message)
+  }
+  if value != wantValue {
+    t.Errorf("Expected value to be %f, got %f instead", wantValue, value)
+  }
+}

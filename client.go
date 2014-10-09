@@ -6,6 +6,7 @@ import (
   "net/url"
   "net/http"
   "reflect"
+  "strconv"
   "encoding/json"
 
   "github.com/google/go-querystring/query"
@@ -84,7 +85,6 @@ func (c *Client) NewRequest(method, urlStr string) (*http.Request, error) {
 
   u := c.BaseURL.ResolveReference(rel)
 
-  fmt.Println("Requesting", u.String())
   req, err := http.NewRequest(method, u.String(), nil)
   if err != nil {
     return nil, err
@@ -153,4 +153,31 @@ func CheckResponse(r *http.Response) error {
     r.Request.Method,
     r.Request.URL,
     r.StatusCode)
+}
+
+// decodeRawJsonFloat decodes a json.RawMessage field to a float by trying to convert
+// it from different formats. This is needed because for example the amount_funded
+// field in the BTCJam API can return a float (1.0000), a string ("1.0000") or an
+// integer (0). The standard Decode cannot handle this.
+func decodeRawJsonFloat(field json.RawMessage) (val float64, err error) {
+    var n int
+    if err = json.Unmarshal(field, &n); err == nil {
+      val = float64(n)
+      return val, nil
+    }
+
+    var s string
+    if err = json.Unmarshal(field, &s); err == nil {
+      val, err = strconv.ParseFloat(s, 64)
+      if err != nil {
+        return 0.0, err
+      }
+      return val, nil
+    }
+
+    if err = json.Unmarshal(field, &val); err == nil {
+      return val, nil
+    }
+
+    return 0.0, fmt.Errorf("Could not convert some fields: %#v", field)
 }
